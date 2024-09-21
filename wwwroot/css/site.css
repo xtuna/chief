@@ -1,0 +1,206 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Header Section */
+header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5B0404;
+    padding: 1rem;
+    color: white;
+}
+
+.logo img {
+    max-height: 50px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+    .nav-links li {
+        list-style: none;
+    }
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bell-icon {
+    font-size: 1.5rem;
+}
+
+/* Dashboard Content */
+.dashboard {
+    padding: 2rem;
+}
+
+h2 {
+    font-size: 2rem;
+    color: #990000;
+}
+
+.spending-summary {
+    background-color: #d4d4d4;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.total-amount h1 {
+    font-size: 4rem;
+    margin: 0.5rem 0;
+}
+
+.export-buttons button {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #990000;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+    .export-buttons button:hover {
+        background-color: #cc0000;
+    }
+
+/* Endorsements */
+.endorsements {
+    display: flex;
+    justify-content: space-around;
+    margin: 2rem 0;
+}
+
+.endorsement-card {
+    background-color: #f4f4f4;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 8px;
+    width: 30%;
+}
+
+    .endorsement-card h3 {
+        font-size: 2rem;
+        color: #990000;
+    }
+
+/* Application Summary */
+.application-summary {
+    background-color: #f4f4f4;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.pie-chart {
+    margin-top: 1rem;
+}
+
+/* Buttons */
+button {
+    padding: 10px;
+    border: none;
+    color: white;
+    background-color: #990000;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+    button:hover {
+        background-color: #cc0000;
+    }
+
+/* Responsive Adjustments */
+@media only screen and (max-width: 768px) {
+    .endorsements {
+        flex-direction: column;
+    }
+
+    .endorsement-card {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    header nav {
+        flex-direction: column;
+    }
+
+    .nav-links {
+        flex-direction: column;
+    }
+}
+
+
+
+
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+    }
+
+    .export-buttons button {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+
+/* Additional styling for the navbar */
+.navbar-brand div {
+    font-size: 0.9rem; /* Adjust the font size of the office name */
+}
+
+.nav-link {
+    margin-right: 20px;
+}
+
+.btn-link i {
+    font-size: 1.2rem;
+}
+
+/* Application style*/
+
+.nav-tabs .nav-link.active {
+    background-color: #9c1f2e;
+    color: white;
+    font-weight: bold;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.btn-primary {
+    background-color: #ffcc00;
+    border-color: #ffcc00;
+    color: #000;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #000;
+}
