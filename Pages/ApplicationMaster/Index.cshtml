@@ -1,0 +1,407 @@
+﻿@page
+@model chief.Pages.ApplicationMaster.IndexModel
+
+@{
+    ViewData["Title"] = "Applications";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Include Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applications</title>
+    <style>
+        /* Global settings */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #000;
+            text-align: left;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Tab Navigation */
+        .tab-container {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: none;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+
+            .tab.active {
+                background-color: #7B0000;
+                color: white;
+            }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #D9D9D9;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead {
+            background-color: #7B0000;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            font-size: 14px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f4f4f4;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Button Styling */
+        .assign-btn {
+            padding: 8px 16px;
+            background-color: #ffc107;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+            .assign-btn:hover {
+                background-color: #e0a800;
+            }
+
+        /* Dropdown Styling */
+        .days-dropdown {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        /* Status Button Styling */
+        .status-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: default;
+            color: white;
+        }
+
+            /* Specific status colors */
+            .status-btn.pending {
+                background-color: gray;
+            }
+
+            .status-btn.approved {
+                background-color: green;
+            }
+
+            .status-btn.rejected {
+                background-color: red;
+            }
+
+            .status-btn.unknown {
+                background-color: darkgray;
+            }
+
+        /* Icon for Actions */
+        .icon-eye {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Action Buttons */
+        .actions-column a {
+            color: #7B0000;
+            font-weight: bold;
+            text-decoration: none;
+            padding-right: 10px;
+        }
+
+            .actions-column a:hover {
+                text-decoration: underline;
+            }
+    </style>
+</head>
+<body>
+
+    <h1>Applications</h1>
+
+    <!-- Tab Navigation -->
+    <div class="tab-container">
+        <button class="tab active" id="activeTab" onclick="showTab('active')">Active Applications</button>
+        <button class="tab" id="completedTab" onclick="showTab('completed')">Completed Applications</button>
+    </div>
+
+    @foreach (var application in Model.PendingApplications)
+    {
+        
+    }
+
+    <!-- Active Applications Table -->
+    <div id="activeApplications" class="tab-content">
+        <table class="table">
+            <thead>
+                <tr>
+                    <center>
+                    <th>
+                            @Html.DisplayNameFor(model => model.PendingApplications[0].DTSNumber)
+                    </th>
+                    <th>Details</th>
+                    <th>
+                            @Html.DisplayNameFor(model => model.PendingApplications[0].Evaluators)
+                    </th>
+                    <th>
+                            @Html.DisplayNameFor(model => model.PendingApplications[0].DaysToEvaluate)
+                    </th>
+                    <th>
+                            @Html.DisplayNameFor(model => model.PendingApplications[0].Status)
+                    </th>
+                    <th>Actions</th>
+                </tr></center>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PendingApplications)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DTSNumber)
+                        </td>
+                        <td>
+                            <div>
+                                <strong>Application:</strong> @Html.DisplayFor(modelItem => item.ApplicationName) <br />
+                                <strong>User Type:</strong> @Html.DisplayFor(modelItem => item.UserType) <br />
+                                <strong>Applicant Name:</strong> @Html.DisplayFor(modelItem => item.ApplicantName) <br />
+                                <strong>Filed Date:</strong> @Html.DisplayFor(modelItem => item.FiledDate)
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column;">
+                                @Html.DisplayFor(modelItem => item.Evaluators)
+                                <button class="assign-btn" style="margin-top: 10px;">Assign Evaluator</button>
+                            </div>
+                        </td>
+                        <td>
+                            <select class="days-dropdown">
+                                @if (item.DaysToEvaluate == 3)
+                                {
+                                    <option value="3" selected="selected">3 days</option>
+                                }
+                                else
+                                {
+                                    <option value="3">3 days</option>
+                                }
+
+                                @if (item.DaysToEvaluate == 5)
+                                {
+                                    <option value="5" selected="selected">5 days</option>
+                                }
+                                else
+                                {
+                                    <option value="5">5 days</option>
+                                }
+
+                                @if (item.DaysToEvaluate == 7)
+                                {
+                                    <option value="7" selected="selected">7 days</option>
+                                }
+                                else
+                                {
+                                    <option value="7">7 days</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            @if (item.Status == "Pending" || item.Status == "Approved" || item.Status == "Rejected" || item.Status == "Unknown")
+                            {
+                                <a asp-page="./EvalDetails" asp-route-id="@item.Id" asp-route-status="@item.Status">
+                                    <button class="status-btn @(item.Status.ToLower())">@item.Status</button>
+                                </a>
+                            }
+                        </td>
+
+
+                        <td class="actions-column">
+                            <a asp-page="./Details" asp-route-id="@item.Id" title="View Details">
+                                <i class="fas fa-eye" style="color: black;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @foreach (var application in Model.CompletedApplications)
+    {
+        
+    }
+
+    <!-- Completed Applications Table -->
+    <div id="completedApplications" class="tab-content" style="display: none;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <center>
+                    <th>
+                            @Html.DisplayNameFor(model => model.CompletedApplications[0].DTSNumber)
+                    </th>
+                    <th>Details</th>
+                    <th>
+                            @Html.DisplayNameFor(model => model.CompletedApplications[0].Evaluators)
+                    </th>
+                    <th>
+                            @Html.DisplayNameFor(model => model.CompletedApplications[0].DaysToEvaluate)
+                    </th>
+                    <th>
+                            @Html.DisplayNameFor(model => model.CompletedApplications[0].Status)
+                    </th>
+                    <th>Actions</th>
+                </tr></center>
+            </thead>
+            <tbody>
+                <!-- Filter applications by "Approved" and "Rejected" statuses -->
+                @foreach (var item in Model.CompletedApplications.Where(a => a.Status == "Approved" || a.Status == "Rejected"))
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DTSNumber)
+                        </td>
+                        <td>
+                            <div>
+                                <strong>Application:</strong> @Html.DisplayFor(modelItem => item.ApplicationName) <br />
+                                <strong>User Type:</strong> @Html.DisplayFor(modelItem => item.UserType) <br />
+                                <strong>Applicant Name:</strong> @Html.DisplayFor(modelItem => item.ApplicantName) <br />
+                                <strong>Filed Date:</strong> @Html.DisplayFor(modelItem => item.FiledDate)
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; flex-direction: column;">
+                                @Html.DisplayFor(modelItem => item.Evaluators)
+                            </div>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DaysToEvaluate)
+                        </td>
+                        <td>
+                            @if (item.Status == "Approved")
+                            {
+                                <a href="/EvaluationDetails/EvaluationDetails">
+                                    <button class="status-btn approved">Approved</button>
+                                </a>
+                            }
+                            else if (item.Status == "Rejected")
+                            {
+                                <a href="/EvaluationDetails/EvaluationDetails">
+                                    <button class="status-btn rejected">Rejected</button>
+                                </a>
+                            }
+                        </td>
+                        <td class="actions-column">
+                            <!-- Updated Hard Copy Received Button -->
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#hardCopyModal">
+                                Hard Copy Received
+                            </button>
+
+
+                            <!-- Endorse Button (trigger modal) -->
+                            <a asp-page="/ApplicationMaster/Endorse" asp-route-id="@item.Id" class="assign-btn" style="background-color: blue; color: white;">
+                                Endorse
+                            </a>
+                        </td>
+                    </tr>
+
+                    <!-- Modal Structure for Hard Copy Received -->
+                    <div class="modal fade" id="hardCopyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Notice</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="alert alert-danger" role="alert">
+                                            <i class="fas fa-exclamation-circle"></i> Do you received the hard copy of documents?
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-warning" onclick="confirmHardCopyReceived()">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <script>
+        function showTab(tabName) {
+            var activeTab = document.getElementById('activeTab');
+            var completedTab = document.getElementById('completedTab');
+            var activeApplications = document.getElementById('activeApplications');
+            var completedApplications = document.getElementById('completedApplications');
+
+            if (tabName === 'active') {
+                activeTab.classList.add('active');
+                completedTab.classList.remove('active');
+                activeApplications.style.display = 'block';
+                completedApplications.style.display = 'none';
+            } else {
+                completedTab.classList.add('active');
+                activeTab.classList.remove('active');
+                completedApplications.style.display = 'block';
+                activeApplications.style.display = 'none';
+            }
+        }
+        function confirmHardCopyReceived() {
+            // Logic to handle the confirmation of hard copy reception
+            // You can make an AJAX call or submit the form
+            alert('Hard Copy Received Confirmed!');
+
+            // Optionally, you can close the modal after confirmation
+            var myModalEl = document.getElementById('hardCopyModal');
+            var modal = bootstrap.Modal.getInstance(myModalEl);
+            modal.hide();
+        }
+</script>
+
+
+</body>
+</html>
