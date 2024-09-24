@@ -214,31 +214,16 @@
                         </td>
                         <td>
                             <select class="days-dropdown">
-                                @if (item.DaysToEvaluate == 3)
+                                @for (int i = 3; i <= 10; i += 1)
                                 {
-                                    <option value="3" selected="selected">3 days</option>
-                                }
-                                else
-                                {
-                                    <option value="3">3 days</option>
-                                }
-
-                                @if (item.DaysToEvaluate == 5)
-                                {
-                                    <option value="5" selected="selected">5 days</option>
-                                }
-                                else
-                                {
-                                    <option value="5">5 days</option>
-                                }
-
-                                @if (item.DaysToEvaluate == 7)
-                                {
-                                    <option value="7" selected="selected">7 days</option>
-                                }
-                                else
-                                {
-                                    <option value="7">7 days</option>
+                                    if (item.DaysToEvaluate == i)
+                                    {
+                                        <option value="@i" selected="selected">@i days</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@i">@i days</option>
+                                    }
                                 }
                             </select>
                         </td>
@@ -329,7 +314,6 @@
                             }
                         </td>
                         <td class="actions-column">
-                            <!-- Updated Hard Copy Received Button -->
                             <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#hardCopyModal">
                                 Hard Copy Received
                             </button>
