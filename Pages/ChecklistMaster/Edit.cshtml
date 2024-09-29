@@ -1,0 +1,50 @@
+﻿@page
+@model chief.Pages.ChecklistMaster.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Checklist</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Checklist.Id" />
+            <div class="form-group">
+                <label asp-for="Checklist.ChecklistId" class="control-label"></label>
+                <input asp-for="Checklist.ChecklistId" class="form-control" />
+                <span asp-validation-for="Checklist.ChecklistId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Checklist.DocumentName" class="control-label"></label>
+                <input asp-for="Checklist.DocumentName" class="form-control" />
+                <span asp-validation-for="Checklist.DocumentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Checklist.ApplicationType" class="control-label"></label>
+                <input asp-for="Checklist.ApplicationType" class="form-control" />
+                <span asp-validation-for="Checklist.ApplicationType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Checklist.Actions" class="control-label"></label>
+                <input asp-for="Checklist.Actions" class="form-control" />
+                <span asp-validation-for="Checklist.Actions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
