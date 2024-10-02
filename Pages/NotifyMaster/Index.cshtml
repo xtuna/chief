@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model chief.Pages.NotifyMaster.IndexModel
 
 @{
@@ -8,8 +8,30 @@
 <h1>Push Notifications</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Create New Notification</a>
 </p>
+
+<!-- Notify button to open pop-up -->
+<button id="notifyBtn">Notify</button>
+
+<!-- Pop-up Modal -->
+<div id="notifyModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Send Notification</h2>
+        <label for="userFilter">Filter by:</label>
+        <select id="userFilter">
+            <option value="all">All Users</option>
+            <option value="user">User ID</option>
+            <option value="role">Role</option>
+        </select>
+        <!-- Additional logic for user/role-specific filters -->
+        <p>
+            <button id="sendNotifyBtn">Send Notification</button>
+        </p>
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -32,29 +54,53 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Notify) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Notify)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<script>
+    // Pop-up Modal Logic
+    var modal = document.getElementById("notifyModal");
+    var btn = document.getElementById("notifyBtn");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    // Logic for sending notification will be added here
+</script>
