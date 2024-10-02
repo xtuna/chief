@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using chief.DAL;
 
@@ -16,7 +16,7 @@ public class Checklist
     public string ApplicationType { get; set; } = string.Empty;
 
     [DisplayName("Checklist Items")]
-    public string ChecklistItems { get; set; } = string.Empty;
+    public List<string> ChecklistItems { get; set; } = new List<string>();
 
     public Notify GenerateNotification(string action)
     {
