@@ -12,3 +12,5 @@ Steps:
 7. and update-database after
 8. modify the shared > _layout.cshtml for header and footer
 9. create pages for your desired menus
+10. add-migration AddUploadedFileNameToApplicationFile
+11. update-database
