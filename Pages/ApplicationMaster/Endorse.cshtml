@@ -1,4 +1,4 @@
-﻿@page "{id:int?}"
+@page "{id:int?}"
 @model chief.Pages.ApplicationMaster.EndorseModel
 @{
     ViewData["Title"] = "Endorse Application";
@@ -193,7 +193,7 @@
                 <span class="file-icon">
                     <i class="fas fa-file-pdf"></i>
                 </span>
-                <span class="file-name">@Model.Application.UploadedFileName</span>
+                <span class="file-name">@Model.Application.ApplicationFiles.FirstOrDefault()?.UploadedFileName</span>
             </a>
         </div>
 
