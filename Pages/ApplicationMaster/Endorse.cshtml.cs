@@ -1,4 +1,4 @@
-﻿using chief.DAL;
+using chief.DAL;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +23,9 @@ namespace chief.Pages.ApplicationMaster
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Application = await _context.Applications.FindAsync(id);
+            Application = await _context.Applications
+                .Include(a => a.ApplicationFiles)  // Include ApplicationFiles
+                .FirstOrDefaultAsync(a => a.Id == id);
 
             if (Application == null)
             {
@@ -32,6 +34,7 @@ namespace chief.Pages.ApplicationMaster
 
             return Page();
         }
+
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
