@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 
@@ -43,7 +43,6 @@ public class Application
 
     // Navigation property for related files
     public ICollection<ApplicationFile> ApplicationFiles { get; set; } = new List<ApplicationFile>();
-    public string UploadedFileName { get; internal set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
