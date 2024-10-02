@@ -1,0 +1,76 @@
+﻿@page
+@model chief.Pages.ChecklistMaster.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/site.js"></script>
+    <script>
+        let itemIndex = Model.Checklist.ChecklistItems.Length;
+
+        function addChecklistItem() {
+            var itemList = document.getElementById("checklist-items");
+            var newItem = document.createElement("div");
+            newItem.classList.add("form-group");
+            newItem.innerHTML = `
+                                <input type="text" class="form-control" name="Checklist.ChecklistItems[${itemIndex}]" />
+                                <button type="button" class="btn btn-danger" onclick="removeChecklistItem(this)">Remove</button>
+                            `;
+            itemList.appendChild(newItem);
+            itemIndex++;
+        }
+
+        function removeChecklistItem(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</head>
+<h1>Edit</h1>
+
+<h4>Checklist</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Checklist.DocumentName" class="control-label"></label>
+                <input asp-for="Checklist.DocumentName" class="form-control" />
+                <span asp-validation-for="Checklist.DocumentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Checklist.ApplicationType" class="control-label"></label>
+                <input asp-for="Checklist.ApplicationType" class="form-control" />
+                <span asp-validation-for="Checklist.ApplicationType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Checklist Items</label>
+                <div id="checklist-items">
+                    @for (int i = 0; i < Model.Checklist.ChecklistItems.Count(); i++)
+                    {
+                        <input type="text" class="form-control" name="Checklist.ChecklistItems[@i]" value="@Model.Checklist.ChecklistItems[i]" />
+                    }
+                </div>
+                <button type="button" class="btn btn-primary" onclick="addChecklistItem()">Add Item</button>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
