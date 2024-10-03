@@ -1,4 +1,7 @@
-﻿using System;
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,11 +21,13 @@ namespace chief.Pages.ChecklistMaster
             _context = context;
         }
 
-        public IList<Checklist> Checklist { get;set; } = default!;
+        public IList<Checklist> Checklist { get; set; } = new List<Checklist>();
 
         public async Task OnGetAsync()
         {
-            Checklist = await _context.Checklists.ToListAsync();
+            Checklist = await _context.Checklists
+                .Include(c => c.ChecklistItems) // Make sure to include checklist items
+                .ToListAsync();
         }
     }
 }
