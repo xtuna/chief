@@ -1,32 +1,43 @@
-﻿using chief.DAL;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using chief.DAL;
 
-public class DetailsModel : PageModel
+namespace chief.Pages.ChecklistMaster
 {
-    private readonly AppDbContext _context;
-
-    public DetailsModel(AppDbContext context)
+    public class DetailsModel : PageModel
     {
-        _context = context;
-    }
+        private readonly chief.DAL.AppDbContext _context;
 
-    public Checklist Checklist { get; set; } = default!;
-
-    public async Task<IActionResult> OnGetAsync(int? id)
-    {
-        if (id == null)
+        public DetailsModel(chief.DAL.AppDbContext context)
         {
-            return NotFound();
+            _context = context;
         }
 
-        Checklist = await _context.Checklists.FirstOrDefaultAsync(m => m.Id == id);
+        public Checklist Checklist { get; set; } = default!;
 
-        if (Checklist == null)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            // Include checklist items in the retrieval
+            Checklist = await _context.Checklists
+                .Include(c => c.ChecklistItems)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (Checklist == null)
+            {
+                return NotFound();
+            }
+
+            return Page();
         }
-        return Page();
     }
 }
