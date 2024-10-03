@@ -1,66 +1,72 @@
-﻿using chief.DAL;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using chief.DAL;
 
-public class EditModel : PageModel
+namespace chief.Pages.ChecklistMaster
 {
-    private readonly AppDbContext _context;
-
-    public EditModel(AppDbContext context)
+    public class EditModel : PageModel
     {
-        _context = context;
-    }
+        private readonly chief.DAL.AppDbContext _context;
 
-    [BindProperty]
-    public Checklist Checklist { get; set; } = default!;
-
-    public async Task<IActionResult> OnGetAsync(int? id)
-    {
-        if (id == null)
+        public EditModel(chief.DAL.AppDbContext context)
         {
-            return NotFound();
+            _context = context;
         }
 
-        Checklist = await _context.Checklists.FindAsync(id);
+        [BindProperty]
+        public Checklist Checklist { get; set; } = new Checklist { ChecklistItems = new List<ChecklistItem>() };
 
-        if (Checklist == null)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            return NotFound();
-        }
-        return Page();
-    }
-
-    public async Task<IActionResult> OnPostAsync()
-    {
-        if (!ModelState.IsValid)
-        {
-            return Page();
-        }
-
-        _context.Attach(Checklist).State = EntityState.Modified;
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!ChecklistExists(Checklist.Id))
+            if (id == null)
             {
                 return NotFound();
             }
-            else
+
+            // Load the checklist and its items
+            Checklist = await _context.Checklists
+                .Include(c => c.ChecklistItems) // Include checklist items
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (Checklist == null)
             {
-                throw;
+                return NotFound();
             }
+            return Page();
         }
 
-        return RedirectToPage("./Index");
-    }
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
 
-    private bool ChecklistExists(int id)
-    {
-        return _context.Checklists.Any(e => e.Id == id);
+            var checklistToUpdate = await _context.Checklists
+        .Include(c => c.ChecklistItems)
+        .FirstOrDefaultAsync(c => c.Id == Checklist.Id);
+
+            if (checklistToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            checklistToUpdate.DocumentName = Checklist.DocumentName;
+            checklistToUpdate.ApplicationType = Checklist.ApplicationType;
+
+            checklistToUpdate.ChecklistItems.Clear();
+            checklistToUpdate.ChecklistItems.AddRange(Checklist.ChecklistItems);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
+
+        }
     }
 }
