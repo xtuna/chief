@@ -1,37 +1,10 @@
-﻿@page
+@page
 @model chief.Pages.ChecklistMaster.CreateModel
 
 @{
     ViewData["Title"] = "Create";
 }
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/css/site.css" />
-    <script src="~/js/site.js"></script>
-    <script>
-        let itemIndex = 0; // to keep track of the number of items
 
-        // Function to add new checklist item
-        function addChecklistItem() {
-            var itemList = document.getElementById("checklist-items");
-            var newItem = document.createElement("div");
-            newItem.classList.add("form-group");
-            newItem.innerHTML = `
-                        <input type="text" class="form-control" name="Checklist.ChecklistItems[${itemIndex}]" />
-                        <button type="button" class="btn btn-danger" onclick="removeChecklistItem(this)">Remove</button>
-                    `;
-            itemList.appendChild(newItem);
-            itemIndex++; // increment the index for the next item
-        }
-
-        // Function to remove checklist item
-        function removeChecklistItem(button) {
-            button.parentElement.remove();
-        }
-    </script>
-</head>
 <h1>Create</h1>
 
 <h4>Checklist</h4>
@@ -50,15 +23,21 @@
                 <input asp-for="Checklist.ApplicationType" class="form-control" />
                 <span asp-validation-for="Checklist.ApplicationType" class="text-danger"></span>
             </div>
-            <!-- Checklist Items Section -->
-            <div class="form-group">
-                <label>Checklist Items</label>
-                <div id="checklist-items">
-                    <!-- Initial checklist item can be pre-populated here if needed -->
-                    <input type="text" class="form-control" name="Checklist.ChecklistItems[0]" />
-                </div>
-                <button type="button" class="btn btn-primary" onclick="addChecklistItem()">Add Item</button>
+
+            <div id="checklist-items">
+                @for (int i = 0; i < Model.Checklist.ChecklistItems.Count; i++)
+                {
+                    <div class="form-group checklist-item">
+                        <label asp-for="Checklist.ChecklistItems[@i].ItemName" class="control-label"></label>
+                        <input asp-for="Checklist.ChecklistItems[@i].ItemName" class="form-control" />
+                        <span asp-validation-for="Checklist.ChecklistItems[@i].ItemName" class="text-danger"></span>
+                        <button type="button" class="btn btn-danger remove-item" onclick="removeItem(this)">Remove</button>
+                    </div>
+                }
             </div>
+
+            <button type="button" class="btn btn-secondary" onclick="addItem()">Add Checklist Item</button>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -71,7 +50,22 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <script>
+        function addItem() {
+            var index = document.querySelectorAll('#checklist-items .checklist-item').length;
+            var newItemHtml = `
+                        <div class="form-group checklist-item">
+                            <label for="Checklist_ChecklistItems_${index}__ItemName" class="control-label"></label>
+                            <input name="Checklist.ChecklistItems[${index}].ItemName" class="form-control" />
+                            <span class="text-danger"></span>
+                            <button type="button" class="btn btn-danger remove-item" onclick="removeItem(this)">Remove</button>
+                        </div>
+                    `;
+            document.getElementById('checklist-items').insertAdjacentHTML('beforeend', newItemHtml);
+        }
+
+        function removeItem(button) {
+            button.parentElement.remove();
+        }
+    </script>
 }
