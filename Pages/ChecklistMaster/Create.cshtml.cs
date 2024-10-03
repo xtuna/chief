@@ -1,43 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using chief.DAL;
+@page
+@model chief.Pages.ChecklistMaster.CreateModel
 
-namespace chief.Pages.ChecklistMaster
-{
-    public class CreateModel : PageModel
-    {
-        private readonly chief.DAL.AppDbContext _context;
+@{
+    ViewData["Title"] = "Create";
+}
 
-        public CreateModel(chief.DAL.AppDbContext context)
-        {
-            _context = context;
+<h1>Create</h1>
+
+<h4>Checklist</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Checklist.DocumentName" class="control-label"></label>
+                <input asp-for="Checklist.DocumentName" class="form-control" />
+                <span asp-validation-for="Checklist.DocumentName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Checklist.ApplicationType" class="control-label"></label>
+                <input asp-for="Checklist.ApplicationType" class="form-control" />
+                <span asp-validation-for="Checklist.ApplicationType" class="text-danger"></span>
+            </div>
+
+            <div id="checklist-items">
+                @for (int i = 0; i < Model.Checklist.ChecklistItems.Count; i++)
+                {
+                    <div class="form-group checklist-item">
+                        <label asp-for="Checklist.ChecklistItems[@i].ItemName" class="control-label"></label>
+                        <input asp-for="Checklist.ChecklistItems[@i].ItemName" class="form-control" />
+                        <span asp-validation-for="Checklist.ChecklistItems[@i].ItemName" class="text-danger"></span>
+                        <button type="button" class="btn btn-danger remove-item" onclick="removeItem(this)">Remove</button>
+                    </div>
+                }
+            </div>
+
+            <button type="button" class="btn btn-secondary" onclick="addItem()">Add Checklist Item</button>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        function addItem() {
+            var index = document.querySelectorAll('#checklist-items .checklist-item').length;
+            var newItemHtml = `
+                        <div class="form-group checklist-item">
+                            <label for="Checklist_ChecklistItems_${index}__ItemName" class="control-label"></label>
+                            <input name="Checklist.ChecklistItems[${index}].ItemName" class="form-control" />
+                            <span class="text-danger"></span>
+                            <button type="button" class="btn btn-danger remove-item" onclick="removeItem(this)">Remove</button>
+                        </div>
+                    `;
+            document.getElementById('checklist-items').insertAdjacentHTML('beforeend', newItemHtml);
         }
 
-        public IActionResult OnGet()
-        {
-            return Page();
+        function removeItem(button) {
+            button.parentElement.remove();
         }
-
-        [BindProperty]
-        public Checklist Checklist { get; set; } = default!;
-
-        // For more information, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.Checklists.Add(Checklist);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
-        }
-    }
+    </script>
 }
