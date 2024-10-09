@@ -42,7 +42,6 @@ public class Application
     [DisplayName("Status")]
     public string Status { get; set; }
 
-    // Navigation property for related files
     public ICollection<ApplicationFile> ApplicationFiles { get; set; } = new List<ApplicationFile>();
     public string UploadedFileName { get; internal set; }
 
