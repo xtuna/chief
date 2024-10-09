@@ -41,7 +41,7 @@ namespace chief.Pages.ChecklistMaster
                 return Page();
             }
 
-            // Update checklist items
+
             var existingItems = _context.ChecklistItems.Where(ci => ci.ChecklistId == Checklist.Id).ToList();
             _context.ChecklistItems.RemoveRange(existingItems);
 
@@ -53,7 +53,7 @@ namespace chief.Pages.ChecklistMaster
 
             await _context.SaveChangesAsync();
 
-            // Create a notification for checklist update
+
             var notification = new Notify
             {
                 Title = $"{Checklist.DocumentName} update",
