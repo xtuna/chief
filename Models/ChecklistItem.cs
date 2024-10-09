@@ -11,7 +11,7 @@ public class ChecklistItem
     public string ItemName { get; set; } = string.Empty;
 
     [ForeignKey("Checklist")]
-    public int ChecklistId { get; set; } // Foreign key to Checklist
+    public int ChecklistId { get; set; }
 
-    public Checklist Checklist { get; set; } // Navigation property back to Checklist
+    public Checklist Checklist { get; set; }
 }
