@@ -62,7 +62,7 @@ INSERT INTO [dbo].[Applications]
     [ApplicationName], 
     [UserType], 
     [ApplicantName], 
-    [FiledDate],  -- Added this column
+    [FiledDate],  
     [Evaluators], 
     [DaysToEvaluate], 
     [Status]
@@ -73,8 +73,8 @@ VALUES
     'Research Grant Application', 
     'Faculty',               
     'Cruz. J',             
-    '2024-09-21',               -- Ensure this is the correct date format
-    '1',                         -- This should be a string if you defined Evaluators as nvarchar
+    '2024-09-21',               
+    '1',                         
     3,                          
     'Pending'
 ),
