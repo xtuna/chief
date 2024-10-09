@@ -12,61 +12,59 @@ namespace chief.Pages.ChecklistMaster
 {
     public class EditModel : PageModel
     {
-        private readonly chief.DAL.AppDbContext _context;
+        private readonly AppDbContext _context;
 
-        public EditModel(chief.DAL.AppDbContext context)
+        public EditModel(AppDbContext context)
         {
             _context = context;
         }
 
         [BindProperty]
-        public Checklist Checklist { get; set; } = new Checklist { ChecklistItems = new List<ChecklistItem>() };
+        public Checklist Checklist { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            // Load the checklist and its items
-            Checklist = await _context.Checklists
-                .Include(c => c.ChecklistItems) // Include checklist items
-                .FirstOrDefaultAsync(m => m.Id == id);
+            Checklist = await _context.Checklists.Include(c => c.ChecklistItems).FirstOrDefaultAsync(c => c.Id == id);
 
             if (Checklist == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string ChecklistItems)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            var checklistToUpdate = await _context.Checklists
-        .Include(c => c.ChecklistItems)
-        .FirstOrDefaultAsync(c => c.Id == Checklist.Id);
+            // Update checklist items
+            var existingItems = _context.ChecklistItems.Where(ci => ci.ChecklistId == Checklist.Id).ToList();
+            _context.ChecklistItems.RemoveRange(existingItems);
 
-            if (checklistToUpdate == null)
-            {
-                return NotFound();
-            }
+            var newItems = ChecklistItems.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                         .Select(item => new ChecklistItem { ItemName = item, ChecklistId = Checklist.Id }).ToList();
 
-            checklistToUpdate.DocumentName = Checklist.DocumentName;
-            checklistToUpdate.ApplicationType = Checklist.ApplicationType;
-
-            checklistToUpdate.ChecklistItems.Clear();
-            checklistToUpdate.ChecklistItems.AddRange(Checklist.ChecklistItems);
+            _context.ChecklistItems.AddRange(newItems);
+            _context.Attach(Checklist).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
 
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            // Create a notification for checklist update
+            var notification = new Notify
+            {
+                Title = $"{Checklist.DocumentName} update",
+                Message = $"The checklist for {Checklist.ApplicationType} has been updated.",
+                Status = "Updated",
+                DateCreated = DateTime.Now
+            };
+            _context.Notifs.Add(notification);
+            await _context.SaveChangesAsync();
 
+            return RedirectToPage("./Index");
         }
     }
 }
