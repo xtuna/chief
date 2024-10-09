@@ -1,5 +1,5 @@
-﻿@page
-@model chief.Pages.NotifyMaster.IndexModel
+@page
+@model chief.Pages.NotificationMaster.IndexModel
 
 @{
     ViewData["Title"] = "Push Notification";
@@ -14,31 +14,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Notify[0].UserId)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Notify[0].Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Notify[0].Message)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Notify[0].Status)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Notify[0].DateCreated)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.Notify) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateCreated)
