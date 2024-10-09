@@ -409,7 +409,6 @@
 
     <script>
             function loadEvaluatorList(applicationId) {
-                // Fetch evaluator list from server (this is a mockup; replace with actual server call)
                 const evaluators = [
                     { id: 1, name: 'Evaluator 1' },
                     { id: 2, name: 'Evaluator 2' },
@@ -417,7 +416,7 @@
                 ];
 
                 const evaluatorList = document.getElementById('evaluatorList');
-                evaluatorList.innerHTML = ''; // Clear any existing list items
+                evaluatorList.innerHTML = '';
 
                 evaluators.forEach(evaluator => {
                     const listItem = document.createElement('li');
@@ -434,9 +433,7 @@
                 const selectedEvaluator = document.querySelector('input[name="selectedEvaluator"]:checked');
                 if (selectedEvaluator) {
                     const evaluatorId = selectedEvaluator.value;
-                    // Send the selected evaluator ID and application ID to the server (using fetch, for example)
                     console.log('Evaluator assigned:', evaluatorId);
-                    // Close the modal after assignment
                     const modal = document.getElementById('assignEvaluatorModal');
                     const bootstrapModal = bootstrap.Modal.getInstance(modal);
                     bootstrapModal.hide();
@@ -446,8 +443,8 @@
             }
         function updateDaysToEvaluate(applicationId, selectedDays) {
             const data = {
-                id: applicationId,  // ID of the application
-                daysToEvaluate: selectedDays  // Number of selected days
+                id: applicationId,
+                daysToEvaluate: selectedDays
             };
 
             fetch('/ApplicationMaster/UpdateDaysToEvaluate', {
@@ -462,7 +459,7 @@
                 .then(result => {
                     if (result.success) {
                         alert('Days to Evaluate updated successfully.');
-                        location.reload();  // Optionally reload the page to reflect changes
+                        location.reload();
                     } else {
                         console.error('Failed to update Days to Evaluate');
                     }
@@ -490,7 +487,7 @@
                     activeApplications.style.display = 'none';
                 }
 
-                localStorage.setItem('activeTab', tabName); // Store tab state
+                localStorage.setItem('activeTab', tabName);
             }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
