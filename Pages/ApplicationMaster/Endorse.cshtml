@@ -123,7 +123,7 @@
             margin-top: 10px;
             display: flex;
             align-items: center;
-            background-color: #a12622; /* Deep red background for the file */
+            background-color: #a12622;
             border-radius: 5px;
             padding: 10px;
             color: white;
@@ -218,17 +218,15 @@
 
         fileUpload.addEventListener('change', (event) => {
             if (event.target.files.length > 0) {
-                fileName.textContent = event.target.files[0].name; // Display the file name
+                fileName.textContent = event.target.files[0].name;
             }
         });
         function updateDaysToEvaluate(applicationId, selectedDays) {
-            // Create a JSON object to send to the server
             const data = {
                 id: applicationId,
                 daysToEvaluate: selectedDays
             };
 
-            // Send the request to the backend using Fetch API
             fetch('/ApplicationMaster/UpdateDaysToEvaluate', {
                 method: 'POST',
                 headers: {
@@ -246,12 +244,10 @@
                 })
                 .then(result => {
                     console.log('Update successful:', result);
-                    // Optionally, reload the page or update the UI dynamically
-                    location.reload(); // To refresh the applications list with updated values
+                    location.reload();
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    // Optionally, display an error message to the user
                 });
         }
     </script>
