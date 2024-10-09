@@ -1,6 +1,6 @@
 # chief
 
-NOTE: create a database first in the mssql
+NOTE: create a database first in the mssql and change the appsettingsjson aligned with your designated database
 
 Steps:
 1. create Model Folder and put the tables
