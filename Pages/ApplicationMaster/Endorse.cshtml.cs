@@ -14,17 +14,16 @@ namespace chief.Pages.ApplicationMaster
             _context = context;
         }
 
-        // Bind the uploaded file from the form
         [BindProperty]
-        public IFormFile UploadedFile { get; set; } // This is the key part for file upload
+        public IFormFile UploadedFile { get; set; } 
 
         [BindProperty]
-        public Application Application { get; set; } // Assuming you are working with the Application entity
+        public Application Application { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
             Application = await _context.Applications
-                .Include(a => a.ApplicationFiles)  // Include ApplicationFiles
+                .Include(a => a.ApplicationFiles)
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (Application == null)
@@ -52,9 +51,8 @@ namespace chief.Pages.ApplicationMaster
                 if (!allowedExtensions.Contains(extension.ToLower()))
                 {
                     ModelState.AddModelError("UploadedFile", "Invalid file type. Please upload a PDF or DOCX file.");
-                    return Page(); // Return to the page with error messages
+                    return Page();
                 }
-                // Save the uploaded file to the server
                 var uniqueFileName = $"{Guid.NewGuid()}_{UploadedFile.FileName}";
                 var filePath = Path.Combine("wwwroot/uploads", UploadedFile.FileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
@@ -65,7 +63,6 @@ namespace chief.Pages.ApplicationMaster
                 application.UploadedFileName = UploadedFile.FileName;
             }
 
-            // Update application status
             application.Status = "Endorsed";
             _context.Attach(application).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -74,7 +71,7 @@ namespace chief.Pages.ApplicationMaster
         }
         public async Task<IActionResult> OnPostUpdateDaysToEvaluateAsync(int id, int daysToEvaluate)
         {
-            // Find the application by ID
+
             var application = await _context.Applications.FindAsync(id);
 
             if (application == null)
@@ -82,20 +79,16 @@ namespace chief.Pages.ApplicationMaster
                 return NotFound();
             }
 
-            // Update DaysToEvaluate for this application
             application.DaysToEvaluate = daysToEvaluate;
 
-            // Optionally: Update the value for all related applications
             var relatedApplications = _context.Applications.Where(a => a.Status == "Active");
             foreach (var app in relatedApplications)
             {
-                app.DaysToEvaluate = daysToEvaluate; // Update all active applications
+                app.DaysToEvaluate = daysToEvaluate;
             }
 
-            // Save changes to the database
             await _context.SaveChangesAsync();
 
-            // Optionally, send success response
             return new JsonResult(new { success = true });
         }
 
