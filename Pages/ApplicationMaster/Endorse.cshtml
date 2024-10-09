@@ -1,0 +1,259 @@
+﻿@page "{id:int?}"
+@model chief.Pages.ApplicationMaster.EndorseModel
+@{
+    ViewData["Title"] = "Endorse Application";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endorse Application</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #000;
+            text-align: left;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .application-details {
+            background-color: #D9D9D9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+            .application-details strong {
+                font-weight: bold;
+            }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        .status-btn {
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+            .status-btn:hover {
+                background-color: darkgreen;
+            }
+
+        .attachment-section {
+            margin-top: 20px;
+        }
+
+        .file-upload {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+
+            .file-upload input[type="file"] {
+                display: none;
+            }
+
+        .file-upload-label {
+            background-color: #b00;
+            color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .file-upload-name {
+            margin-left: 15px;
+            font-size: 16px;
+        }
+
+        .message-box {
+            width: 100%;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .send-btn {
+            padding: 10px 20px;
+            background-color: #b00;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+            .send-btn:hover {
+                background-color: darkred;
+            }
+
+        .attachment-section {
+            border-top: 1px solid #e0e0e0;
+            padding: 15px 0;
+        }
+
+        .attachment {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #a12622; /* Deep red background for the file */
+            border-radius: 5px;
+            padding: 10px;
+            color: white;
+        }
+
+        .attachment-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .file-icon {
+            margin-right: 10px;
+        }
+
+            .file-icon i {
+                font-size: 20px;
+            }
+
+        .file-name {
+            font-size: 16px;
+        }
+
+        .upload-section {
+            margin-top: 10px;
+        }
+
+            .upload-section .btn {
+                background-color: transparent;
+                border: 1px solid #a12622;
+                color: #a12622;
+            }
+
+                .upload-section .btn:hover {
+                    background-color: #a12622;
+                    color: white;
+                }
+
+    </style>
+</head>
+<body>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Endorse</h1>
+        <a href="/ApplicationMaster" class="btn btn-light border">Back</a>
+    </div>
+
+    <div class="application-details">
+        <strong>Endorse Application:</strong> @Model.Application.DTSNumber <br />
+        <strong>Application Type:</strong> @Model.Application.ApplicationName <br />
+        <strong>No. of Days to Evaluate:</strong> @Model.Application.DaysToEvaluate <br />
+        <strong>Applicant Name:</strong> @Model.Application.ApplicantName <br />
+    </div>
+
+    <!-- File Upload Section -->
+    <div class="attachment-section">
+        <div class="upload-section">
+            <h5>Attachment</h5>
+            <label class="btn btn-outline-danger">
+                <i class="fas fa-plus"></i> Upload File
+                <input type="file" id="file-upload" name="UploadedFile" hidden asp-for="UploadedFile" />
+            </label>
+            <span id="file-upload-name" class="file-upload-name"></span> <!-- File name display -->
+        </div>
+
+        <div class="attachment">
+            <a href="/uploads/@Model.Application.UploadedFileName" class="attachment-link">
+                <span class="file-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </span>
+                <span class="file-name">@Model.Application.ApplicationFiles.FirstOrDefault()?.UploadedFileName</span>
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- Message Box -->
+    <div class="message-box">
+        We are pleased to inform you that your application request with a DTS No. @Model.Application.DTSNumber has been approved. Attached, you will find your Endorsement Letter, which formally recognizes the successful approval of your application. Thank you!
+    </div>
+
+    <!-- Submit Button -->
+    <form method="post" class="actions">
+        <input type="hidden" asp-for="Application.Id" />
+        <button type="submit" class="send-btn">Send</button>
+    </form>
+
+    <script>
+        const fileUpload = document.getElementById('file-upload');
+        const fileName = document.getElementById('file-upload-name');
+
+        fileUpload.addEventListener('change', (event) => {
+            if (event.target.files.length > 0) {
+                fileName.textContent = event.target.files[0].name; // Display the file name
+            }
+        });
+        function updateDaysToEvaluate(applicationId, selectedDays) {
+            // Create a JSON object to send to the server
+            const data = {
+                id: applicationId,
+                daysToEvaluate: selectedDays
+            };
+
+            // Send the request to the backend using Fetch API
+            fetch('/ApplicationMaster/UpdateDaysToEvaluate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value // CSRF token
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to update Days to Evaluate');
+                    }
+                })
+                .then(result => {
+                    console.log('Update successful:', result);
+                    // Optionally, reload the page or update the UI dynamically
+                    location.reload(); // To refresh the applications list with updated values
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Optionally, display an error message to the user
+                });
+        }
+    </script>
+</body>
+</html>
