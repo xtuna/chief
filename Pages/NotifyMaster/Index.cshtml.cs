@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using chief.DAL;
 
-namespace chief.Pages.NotificationMaster
+namespace chief.Pages.NotifyMaster
 {
     public class IndexModel : PageModel
     {
