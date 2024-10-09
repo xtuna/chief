@@ -1,0 +1,226 @@
+﻿@page
+@model chief.Pages.EvaluatorMaster.ProfileModel
+@{
+    ViewData["Title"] = "Evaluator Profile";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* Profile Header Section */
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px 30px;
+            border-bottom: 2px solid #ddd;
+        }
+
+            .profile-header h1 {
+                font-size: 24px;
+                font-weight: bold;
+                margin: 0;
+                color: #000;
+            }
+
+            .profile-header .sub-title {
+                font-size: 14px;
+                font-weight: normal;
+                color: #333;
+                margin-top: 4px;
+            }
+
+        .back-btn {
+            padding: 10px 20px;
+            background-color: #7B0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+            .back-btn:hover {
+                background-color: #9c1e1e;
+            }
+
+        /* Main Layout */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+        }
+
+            .profile-info img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                margin-right: 20px;
+            }
+
+            .profile-info h2 {
+                font-size: 20px;
+                margin: 0;
+                color: #000;
+            }
+
+            .profile-info p {
+                margin: 5px 0;
+                color: #7b7b7b;
+            }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Stats Boxes */
+        .stat-box {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 150px;
+        }
+
+            .stat-box h3 {
+                font-size: 2.5em;
+                margin: 0;
+            }
+
+            .stat-box p {
+                margin: 0;
+                font-size: 14px;
+            }
+
+        /* Stat box colors */
+        .pending {
+            background-color: #f7c63b;
+        }
+
+        .evaluated {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .missed {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 16px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #7B0000;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Full-width Profile Header Section -->
+    <div style="margin-bottom: 20px;">
+        <h1>Evaluators</h1>
+        <p class="sub-title" style="margin-top: -10px;">Internal Evaluator</p>
+        <a href="/EvaluatorMaster" class="back-btn" style="float: right; margin-top: -50px;">Back</a>
+    </div>
+
+
+    <!-- Existing Profile Content Section -->
+    <div class="header">
+        <div class="profile-info">
+            <!-- Placeholder image -->
+            <img src="https://via.placeholder.com/80" alt="Evaluator Profile Picture">
+            <div>
+                <h2>@Model.Evaluator.Name</h2>
+                <p>@Model.Evaluator.Specialization</p>
+                <p>@Model.Evaluator.Id</p>
+            </div>
+        </div>
+        <!-- Statistics Section -->
+        <div class="stats">
+            <div class="stat-box pending">
+                <h3>@Model.PendingRequests</h3>
+                <p>TOTAL</p>
+                <p>Pending Application Requests</p>
+            </div>
+            <div class="stat-box evaluated">
+                <h3>@Model.EvaluatedRequests</h3>
+                <p>TOTAL</p>
+                <p>Evaluated Application Requests</p>
+            </div>
+            <div class="stat-box missed">
+                <h3>@Model.MissedRequests</h3>
+                <p>TOTAL</p>
+                <p>Missed Application Requests</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Table Section -->
+    <table>
+        <thead>
+            <tr>
+                <th>DTS No.</th>
+                <th>Document Title</th>
+                <th>Application Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var document in Model.EvaluatorDocuments)
+            {
+                <tr>
+                    <td>@document.DTSNumber</td>
+                    <td>@document.Title</td>
+                    <td>@document.ApplicationType</td>
+                    <td>
+                        <button type="button" onclick="viewDocument(@document.Id)">View</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <script>
+        function viewDocument(documentId) {
+            alert(`Viewing document with ID ${documentId}`);
+        }
+    </script>
+</body>
+</html>

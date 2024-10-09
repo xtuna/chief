@@ -1,0 +1,142 @@
+﻿@page
+@model chief.Pages.DashboardMaster.IndexModel
+@{
+}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f9f9f9;
+    }
+
+    .dashboard-header h1 {
+        color: #000;
+        font-weight: bold;
+    }
+
+    .metrics-overview {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+    .total-spent {
+        background-color: #960a0a;
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .amount {
+        font-size: 50px;
+        font-weight: bold;
+    }
+
+    .export-buttons button {
+        background-color: #006b4f;
+        color: white;
+        margin-right: 10px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .application-summary {
+        background-color: #f0e6d3;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .totals-overview {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+    }
+
+        .totals-overview div {
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+    .memorandums-section {
+        background-color: #960a0a;
+        color: white;
+        padding: 20px;
+    }
+
+    .memorandum-list {
+        list-style-type: none;
+        padding-left: 0;
+    }
+</style>
+<div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p>Welcome, RSC Chief!</p>
+</div>
+
+<div class="metrics-overview">
+    <div class="total-spent">
+        <h2>Total Spent on All Services</h2>
+        <div class="amount">
+            <span>250,000</span><span>PHP</span>
+        </div>
+        <div class="export-buttons">
+            <button class="export-excel">Export as Excel</button>
+            <button class="export-pdf">Export as PDF</button>
+        </div>
+    </div>
+
+    <div class="application-summary">
+        <h3>Application Request Summary</h3>
+        <div class="pie-chart">
+            <!-- Placeholder for pie chart; use JavaScript library like Chart.js -->
+            <img src="path/to/piechart-placeholder.png" alt="Pie Chart" />
+        </div>
+        <div class="summary-details">
+            <p>Pending: 50%</p>
+            <p>Approved: 25%</p>
+            <p>Rejected: 25%</p>
+        </div>
+    </div>
+</div>
+
+<div class="totals-overview">
+    <div class="grants">
+        <p><strong>50</strong> Total Grants Endorsed</p>
+    </div>
+    <div class="incentives">
+        <p><strong>100</strong> Total Incentives Endorsed</p>
+    </div>
+    <div class="assistance">
+        <p><strong>69</strong> Total Assistance Endorsed</p>
+    </div>
+</div>
+
+<div class="memorandums-section">
+    <h2>Memorandums</h2>
+    <ul class="memorandum-list">
+        <li>Memorandum 13 - Revised Implementing Guidelines for Thesis and Dissertation Grant</li>
+        <li>Memorandum 15 - Revised Implementing Guidelines on Incentives for Publication and Citation</li>
+        <li>Memorandum 16 - Revised Implementing Guidelines on International and National Paper Presentation Financial Assistance</li>
+        <li>Executive No. 15 - Revised Policy on Merit Promotion Through Research Production, Publication, and Citation</li>
+        <li>Executive No. 19 - Policy on Funding Support to Students for Research Production, Paper Presentation, Publication, and Patent</li>
+        <li>Executive No. 22 - Revised Policy on Implementing Guidelines on University Publication Assistance (UPA) and Publication and Citation Incentives</li>
+    </ul>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myPieChart').getContext('2d');
+    const myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Pending', 'Approved', 'Rejected'],
+            datasets: [{
+                data: [50, 25, 25],
+                backgroundColor: ['#cccccc', '#228B22', '#B22222']
+            }]
+        }
+    });
+</script>
