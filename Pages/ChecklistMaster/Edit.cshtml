@@ -5,50 +5,23 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h2>Edit Checklist</h2>
 
-<h4>Checklist</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Checklist.Id" />
-            <div class="form-group">
-                <label asp-for="Checklist.DocumentName" class="control-label"></label>
-                <input asp-for="Checklist.DocumentName" class="form-control" />
-                <span asp-validation-for="Checklist.DocumentName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Checklist.ApplicationType" class="control-label"></label>
-                <input asp-for="Checklist.ApplicationType" class="form-control" />
-                <span asp-validation-for="Checklist.ApplicationType" class="text-danger"></span>
-            </div>
-
-            <div id="checklist-items">
-                @for (int i = 0; i < Model.Checklist.ChecklistItems.Count; i++)
-                {
-                    <div class="form-group checklist-item">
-                        <label asp-for="Checklist.ChecklistItems[@i].ItemName" class="control-label"></label>
-                        <input asp-for="Checklist.ChecklistItems[@i].ItemName" class="form-control" />
-                        <span asp-validation-for="Checklist.ChecklistItems[@i].ItemName" class="text-danger"></span>
-                        <button type="button" class="btn btn-danger remove-item" onclick="removeItem(this)">Remove</button>
-                    </div>
-                }
-            </div>
-
-            <button type="button" class="btn btn-secondary" onclick="addItem()">Add Checklist Item</button>
-
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<form method="post">
+    <div class="form-group">
+        <label for="DocumentName">Document Name</label>
+        <input type="text" class="form-control" id="DocumentName" name="Checklist.DocumentName" value="@Model.Checklist.DocumentName" required />
     </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label for="ApplicationType">Application Type</label>
+        <input type="text" class="form-control" id="ApplicationType" name="Checklist.ApplicationType" value="@Model.Checklist.ApplicationType" required />
+    </div>
+    <div class="form-group">
+        <label for="ChecklistItems">Checklist Items</label>
+        <input type="text" class="form-control" id="ChecklistItems" value="@string.Join(',', Model.Checklist.ChecklistItems.Select(i => i.ItemName))" name="ChecklistItems" placeholder="Separate items with commas" />
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
 
 @section Scripts {
     <script>
@@ -56,17 +29,11 @@
             var index = document.querySelectorAll('#checklist-items .checklist-item').length;
             var newItemHtml = `
                         <div class="form-group checklist-item">
-                            <label asp-for="Checklist.ChecklistItems[${index}].ItemName" class="control-label"></label>
+                            <label>Checklist Item</label>
                             <input name="Checklist.ChecklistItems[${index}].ItemName" class="form-control" />
-                            <span class="text-danger"></span>
-                            <button type="button" class="btn btn-danger remove-item" onclick="removeItem(this)">Remove</button>
                         </div>
                     `;
             document.getElementById('checklist-items').insertAdjacentHTML('beforeend', newItemHtml);
-        }
-
-        function removeItem(button) {
-            button.parentElement.remove();
         }
     </script>
 }
