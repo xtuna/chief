@@ -144,3 +144,5 @@ WHERE TABLE_NAME = 'Applications';
 
 DROP TABLE Applications;
 
+INSERT INTO Evaluators (Name, Email, Specialization, Type, Status)
+VALUES ('Juan Dela Cruz', 'user@pup.edu.ph', 'Associate', 'Internal', 'Active');
