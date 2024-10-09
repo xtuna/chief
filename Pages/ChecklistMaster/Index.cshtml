@@ -5,7 +5,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Checklist Index</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -13,12 +13,8 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Checklist[0].DocumentName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Checklist[0].ApplicationType)
-            </th>
+            <th>Document Name</th>
+            <th>Application Type</th>
             <th>Checklist Items</th>
             <th>Actions</th>
         </tr>
@@ -27,30 +23,18 @@
         @foreach (var item in Model.Checklist)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DocumentName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ApplicationType)
-                </td>
+                <td>@Html.DisplayFor(modelItem => item.DocumentName)</td>
+                <td>@Html.DisplayFor(modelItem => item.ApplicationType)</td>
                 <td>
                     <ul>
-                        @if (item.ChecklistItems != null && item.ChecklistItems.Any())
+                        @foreach (var checklistItem in item.ChecklistItems)
                         {
-                            foreach (var checklistItem in item.ChecklistItems)
-                            {
-                                <li>@Html.DisplayFor(m => checklistItem.ItemName)</li>
-                            }
-                        }
-                        else
-                        {
-                            <li>No checklist items added.</li>
+                            <li>@Html.DisplayFor(m => checklistItem.ItemName)</li>
                         }
                     </ul>
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
