@@ -19,40 +19,39 @@ namespace chief.Pages.ChecklistMaster
         }
 
         [BindProperty]
-        public Checklist Checklist { get; set; } = default!;
+        public Checklist Checklist { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            if (id == null)
+            Checklist = await _context.Checklists.Include(c => c.ChecklistItems).FirstOrDefaultAsync(c => c.Id == id);
+
+            if (Checklist == null)
             {
                 return NotFound();
             }
 
-            var checklist = await _context.Checklists.FirstOrDefaultAsync(m => m.Id == id);
-
-            if (checklist == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                Checklist = checklist;
-            }
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var checklist = await _context.Checklists.Include(c => c.ChecklistItems).FirstOrDefaultAsync(c => c.Id == id);
 
-            var checklist = await _context.Checklists.FindAsync(id);
             if (checklist != null)
             {
-                Checklist = checklist;
-                _context.Checklists.Remove(Checklist);
+                _context.Checklists.Remove(checklist);
+                _context.ChecklistItems.RemoveRange(checklist.ChecklistItems);
+                await _context.SaveChangesAsync();
+
+                // Create a notification for checklist deletion
+                var notification = new Notify
+                {
+                    Title = $"{checklist.DocumentName} update",
+                    Message = $"The checklist for {checklist.ApplicationType} has been deleted.",
+                    Status = "Deleted",
+                    DateCreated = DateTime.Now
+                };
+                _context.Notifs.Add(notification);
                 await _context.SaveChangesAsync();
             }
 
