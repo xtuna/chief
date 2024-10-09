@@ -29,14 +29,12 @@ namespace chief.Pages.ChecklistMaster
                 return Page();
             }
 
-            // Parse ChecklistItems (comma-separated string)
             var items = ChecklistItems.Split(',', StringSplitOptions.RemoveEmptyEntries);
             Checklist.ChecklistItems = items.Select(item => new ChecklistItem { ItemName = item }).ToList();
 
             _context.Checklists.Add(Checklist);
             await _context.SaveChangesAsync();
 
-            // Create a notification for checklist creation
             var notification = new Notify
             {
                 Title = $"{Checklist.DocumentName} update",
