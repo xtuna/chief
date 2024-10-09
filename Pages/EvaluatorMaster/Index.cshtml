@@ -59,7 +59,6 @@
             background-color: #f1f1f1;
         }
 
-        /* Status Button and Dropdown Styles */
         .status-container {
             display: flex;
             align-items: center;
@@ -79,19 +78,18 @@
             }
 
         .status-container .active-status {
-            background-color: #28a745; /* Green */
+            background-color: #28a745;
             color: white;
         }
 
         .status-container .inactive-status {
-            background-color: #6c757d; /* Gray */
+            background-color: #6c757d;
             color: white;
         }
 
-        /* Hover and Focus Styles */
         .status-dropdown:focus {
             outline: none;
-            border: 1px solid #7B0000; /* Change border on focus */
+            border: 1px solid #7B0000;
         }
 
         .profile-btn {
@@ -168,7 +166,6 @@
     </table>
     <script>
         function updateStatus(element, evaluatorId) {
-            // Handle the status change logic here (e.g., send AJAX request to the server)
             alert(`Status of evaluator with ID ${evaluatorId} changed to: ${element.value}`);
         }
 
