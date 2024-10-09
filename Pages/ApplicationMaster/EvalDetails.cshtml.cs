@@ -61,7 +61,6 @@ namespace chief.Pages.ApplicationMaster
         }
         public async Task<IActionResult> OnPostUpdateDaysToEvaluateAsync(int id, int daysToEvaluate)
         {
-            // Find the application by ID
             var application = await _context.Applications.FindAsync(id);
 
             if (application == null)
@@ -69,20 +68,16 @@ namespace chief.Pages.ApplicationMaster
                 return NotFound();
             }
 
-            // Update DaysToEvaluate for this application
             application.DaysToEvaluate = daysToEvaluate;
 
-            // Optionally: Update the value for all related applications
             var relatedApplications = _context.Applications.Where(a => a.Status == "Active");
             foreach (var app in relatedApplications)
             {
-                app.DaysToEvaluate = daysToEvaluate; // Update all active applications
+                app.DaysToEvaluate = daysToEvaluate;
             }
 
-            // Save changes to the database
             await _context.SaveChangesAsync();
 
-            // Optionally, send success response
             return new JsonResult(new { success = true });
         }
     }
