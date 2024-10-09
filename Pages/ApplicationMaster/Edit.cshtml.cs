@@ -37,8 +37,7 @@ namespace chief.Pages.ApplicationMaster
             Application = application;
             return Page();
         }
-
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync(int id)
         {
@@ -53,17 +52,14 @@ namespace chief.Pages.ApplicationMaster
                 return NotFound();
             }
 
-            // Update the DaysToEvaluate field with the form value
             application.DaysToEvaluate = Application.DaysToEvaluate;
 
-            // Apply the update to all other applications
             var allApplications = await _context.Applications.ToListAsync();
             foreach (var app in allApplications)
             {
                 app.DaysToEvaluate = application.DaysToEvaluate;
             }
 
-            // Save changes to the database
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
