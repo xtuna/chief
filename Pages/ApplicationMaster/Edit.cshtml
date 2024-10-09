@@ -68,13 +68,11 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     function updateDaysToEvaluate(applicationId, selectedDays) {
-    // Create a JSON object to send to the server
     const data = {
         id: applicationId,
         daysToEvaluate: selectedDays
     };
 
-    // Send the request to the backend using Fetch API
     fetch('/ApplicationMaster/UpdateDaysToEvaluate', {
         method: 'POST',
         headers: {
@@ -92,12 +90,10 @@
     })
     .then(result => {
         console.log('Update successful:', result);
-        // Optionally, reload the page or update the UI dynamically
-        location.reload(); // To refresh the applications list with updated values
+        location.reload();
     })
     .catch(error => {
         console.error('Error:', error);
-        // Optionally, display an error message to the user
     });
 }
 
