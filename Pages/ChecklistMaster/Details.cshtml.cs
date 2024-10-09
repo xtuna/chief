@@ -27,7 +27,7 @@ namespace chief.Pages.ChecklistMaster
                 return NotFound();
             }
 
-            // Include checklist items in the retrieval
+
             Checklist = await _context.Checklists
                 .Include(c => c.ChecklistItems)
                 .FirstOrDefaultAsync(m => m.Id == id);
