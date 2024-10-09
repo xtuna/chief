@@ -22,7 +22,7 @@ namespace chief.Pages.NotifyMaster
 
         public async Task OnGetAsync()
         {
-            // You can add sorting/filtering logic here by userId, role, etc.
+
             Notify = await _context.Notifs
                 .OrderByDescending(n => n.DateCreated)
                 .ToListAsync();
