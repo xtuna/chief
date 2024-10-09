@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using chief.DAL;
 
-namespace chief.Pages.NotifyMaster
+namespace chief.Pages.NotificationMaster
 {
     public class IndexModel : PageModel
     {
@@ -22,7 +22,10 @@ namespace chief.Pages.NotifyMaster
 
         public async Task OnGetAsync()
         {
-            Notify = await _context.Notifs.ToListAsync();
+            // You can add sorting/filtering logic here by userId, role, etc.
+            Notify = await _context.Notifs
+                .OrderByDescending(n => n.DateCreated)
+                .ToListAsync();
         }
     }
 }
