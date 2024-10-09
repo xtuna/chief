@@ -21,13 +21,12 @@ using System.Collections.Generic;
 
         [Required]
         [DisplayName("Type")]
-        public string Type { get; set; } = string.Empty; // "Internal" or "External"
+        public string Type { get; set; } = string.Empty;
 
         [Required]
         [DisplayName("Status")]
-        public string Status { get; set; } = "Inactive"; // "Active" or "Inactive"
+        public string Status { get; set; } = "Inactive";
 
-        // Custom validation to ensure only valid values are accepted
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var validTypes = new List<string> { "Internal", "External" };
