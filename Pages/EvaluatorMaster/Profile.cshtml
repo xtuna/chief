@@ -1,4 +1,4 @@
-﻿@page "{id:int?}"
+@page
 @model chief.Pages.EvaluatorMaster.ProfileModel
 @{
     ViewData["Title"] = "Evaluator Profile";
@@ -8,138 +8,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evaluator Profile</title>
+    <title>@ViewData["Title"]</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
             margin: 0;
-            padding: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            width: 100%;
+            margin: 0 auto;
         }
 
         .header {
-            background-color: #7B0000;
-            padding: 10px 20px;
-            color: white;
-            font-size: 1.2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-        }
-
-            .header a {
-                color: white;
-                text-decoration: none;
-                font-weight: bold;
-            }
-
-        h1 {
-            font-size: 1.5rem;
-            margin: 20px 0 10px 20px;
-            font-weight: bold;
-        }
-
-        h2 {
-            font-size: 1.2rem;
-            margin-left: 20px;
-            color: #6c757d;
-        }
-
-        .profile-container {
-            margin: 20px;
+            background-color: #d9d9d9;
             padding: 20px;
-            background-color: #D9D9D9;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
 
-        .profile-image {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background-color: white;
-            border: 2px solid #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            color: #7B0000;
-        }
+            .header .profile-info {
+                display: flex;
+                align-items: center;
+            }
 
-        .profile-info {
-            margin-left: 20px;
-        }
+            .header img {
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                margin-right: 20px;
+            }
 
-            .profile-info h3 {
-                font-size: 1.5rem;
-                font-weight: bold;
+            .header h2 {
+                font-size: 24px;
                 margin: 0;
+                color: #000;
             }
 
-            .profile-info p {
-                font-size: 1rem;
+            .header p {
                 margin: 5px 0;
-                color: #333;
             }
 
-        .stats-container {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px;
-        }
+            .header .stats {
+                display: flex;
+                gap: 20px;
+            }
 
         .stat-box {
-            width: 150px;
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 10px;
             text-align: center;
+            padding: 20px;
+            border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 150px;
         }
 
+            .stat-box.pending {
+                background-color: #f7c63b;
+            }
+
+            .stat-box.evaluated {
+                background-color: #28a745;
+                color: white;
+            }
+
+            .stat-box.missed {
+                background-color: #dc3545;
+                color: white;
+            }
+
             .stat-box h3 {
+                font-size: 2em;
                 margin: 0;
-                font-size: 2rem;
-                color: #7B0000;
             }
 
             .stat-box p {
-                margin: 5px 0 0;
-                font-size: 1rem;
-                color: #6c757d;
+                margin: 5px 0;
             }
-
-        .pending {
-            border-top: 6px solid #ffc107;
-        }
-
-        .evaluated {
-            border-top: 6px solid #28a745;
-        }
-
-        .missed {
-            border-top: 6px solid #dc3545;
-        }
-
-        .table-container {
-            margin: 20px;
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
 
         table {
             width: 100%;
+            margin-top: 20px;
             border-collapse: collapse;
-            background-color: white;
-            border-radius: 10px;
         }
 
         th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
+            padding: 16px;
+            border: 1px solid #ddd;
         }
 
         th {
@@ -147,65 +106,53 @@
             color: white;
         }
 
-        td {
-            background-color: #f9f9f9;
-            color: #333;
-        }
-
         .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
             background-color: #7B0000;
             color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            display: inline-block;
-            margin: 20px;
             text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
         }
-
-            .back-btn:hover {
-                background-color: #5A0000;
-            }
     </style>
 </head>
 <body>
-    <div class="header">
-        <span>Evaluator Profile</span>
-        <a href="/EvaluatorMaster/Index" class="back-btn">Back</a>
-    </div>
+    <div class="container">
+        <!-- Profile Header Section -->
+        <div class="header">
+            <div class="profile-info">
+                <!-- Placeholder image -->
+                <img src="https://via.placeholder.com/100" alt="Evaluator Profile Picture">
+                <div>
+                    <h2>@Model.Evaluator.Name</h2>
+                    <p><strong>Email:</strong> @Model.Evaluator.Email</p>
+                    <p><strong>Specialization:</strong> @Model.Evaluator.Specialization</p>
+                    <p><strong>Type:</strong> @Model.Evaluator.Type</p>
+                    <p><strong>Status:</strong> @Model.Evaluator.Status</p>
+                </div>
+            </div>
+            <!-- Statistics Section -->
+            <div class="stats">
+                <div class="stat-box pending">
+                    <h3>@Model.PendingRequests</h3>
+                    <p>TOTAL</p>
+                    <p>Pending Application Requests</p>
+                </div>
+                <div class="stat-box evaluated">
+                    <h3>@Model.EvaluatedRequests</h3>
+                    <p>TOTAL</p>
+                    <p>Evaluated Application Requests</p>
+                </div>
+                <div class="stat-box missed">
+                    <h3>@Model.MissedRequests</h3>
+                    <p>TOTAL</p>
+                    <p>Missed Application Requests</p>
+                </div>
+            </div>
+        </div>
 
-    <h1>Evaluators</h1>
-    <h2>Internal Evaluator</h2>
-
-    <div class="profile-container">
-        <div class="profile-image">
-            <i class="fa fa-user"></i>
-        </div>
-        <div class="profile-info">
-            <h3>Evaluator's Name</h3>
-            <p>Specialization</p>
-            <p>Evaluator ID: @Model.Evaluator.Id</p>
-        </div>
-    </div>
-
-    <div class="stats-container">
-        <div class="stat-box pending">
-            <h3>50</h3>
-            <p>Pending Application Requests</p>
-        </div>
-        <div class="stat-box evaluated">
-            <h3>45</h3>
-            <p>Evaluated Application Requests</p>
-        </div>
-        <div class="stat-box missed">
-            <h3>5</h3>
-            <p>Missed Application Requests</p>
-        </div>
-    </div>
-
-    <div class="table-container">
+        <!-- Document Table Section -->
         <table>
             <thead>
                 <tr>
@@ -216,18 +163,28 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Example row, replace with dynamic data -->
-                <tr>
-                    <td>123456</td>
-                    <td>Research Proposal A</td>
-                    <td>Research Paper</td>
-                    <td>
-                        <!-- Add action buttons or links here -->
-                    </td>
-                </tr>
-                <!-- Add more rows dynamically based on the evaluator's data -->
+                @foreach (var document in Model.EvaluatorDocuments)
+                {
+                    <tr>
+                        <td>@document.DTSNumber</td>
+                        <td>@document.Title</td>
+                        <td>@document.ApplicationType</td>
+                        <td>
+                            <button type="button" onclick="viewDocument(@document.Id)">View</button>
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
+
+        <!-- Back Button -->
+        <a href="/EvaluatorMaster/Index" class="back-btn">Back</a>
     </div>
+    <script>
+            function viewDocument(documentId) {
+            // Redirect or display document details
+            alert(`Viewing document with ID ${documentId}`);
+        }
+    </script>
 </body>
 </html>
