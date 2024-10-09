@@ -43,7 +43,6 @@ namespace chief.Pages.ChecklistMaster
                 _context.ChecklistItems.RemoveRange(checklist.ChecklistItems);
                 await _context.SaveChangesAsync();
 
-                // Create a notification for checklist deletion
                 var notification = new Notify
                 {
                     Title = $"{checklist.DocumentName} update",
