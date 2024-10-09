@@ -35,7 +35,7 @@ namespace chief.Pages.ChecklistMaster
                 _context.Checklists.Remove(checklist);
                 await _context.SaveChangesAsync();
 
-                // Create push notification for delete action
+
                 var notification = new Notify
                 {
                     Title = $"{checklist.DocumentName} update",
